@@ -511,13 +511,17 @@ function startReveal() {
    10. 3D TILT
 ========================================================= */
 
-(function tilt() {
+function initTilt() {
   if (prefersReduced) return;
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
   const MAX = 8;
 
   $$("[data-tilt]").forEach((card) => {
+    // Tránh gắn sự kiện 2 lần nếu hàm được gọi lại
+    if (card.dataset.tiltInitialized) return;
+    card.dataset.tiltInitialized = "true";
+
     card.style.willChange = "transform";
 
     card.addEventListener("mousemove", (e) => {
@@ -539,7 +543,9 @@ function startReveal() {
       card.style.transform = "";
     });
   });
-})();
+}
+
+initTilt();
 
 
 /* =========================================================
@@ -1838,11 +1844,19 @@ function fireConfetti(count = 80) {
    34. 3D CARD FLIP
 ========================================================= */
 
-(function flipCards() {
+/* =========================================================
+   34. 3D CARD FLIP (Đã sửa thành hàm để gọi lại)
+========================================================= */
+
+function initFlipCards() {
   const cards = $$(".project-card[data-flip]");
   if (!cards.length) return;
 
   cards.forEach((card) => {
+    // Tránh gắn sự kiện 2 lần nếu hàm được gọi lại
+    if (card.dataset.flipInitialized) return;
+    card.dataset.flipInitialized = "true";
+
     const inner = card.querySelector(".flip-inner");
     if (!inner) return;
 
@@ -1867,7 +1881,9 @@ function fireConfetti(count = 80) {
       }
     });
   });
-})();
+}
+
+initFlipCards();
 
 
 /* =========================================================
@@ -2265,3 +2281,106 @@ Game.init();
   });
   obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 })();
+
+
+/* =========================================================
+   40. GỌI API GITHUB ĐỂ LOAD DỰ ÁN THẬT
+========================================================= */
+
+/* =========================================================
+   40. GỌI API GITHUB ĐỂ LOAD DỰ ÁN THẬT
+========================================================= */
+
+async function loadGitHubProjects() {
+  const grid = document.getElementById('projectsGrid');
+  const username = 'Te06'; 
+  
+  // 👇 MÀY SỬA DANH SÁCH TÊN REPO MÀY MUỐN HIỂN THỊ Ở ĐÂY 👇
+  // Phải viết CHÍNH XÁC tên repo như trên GitHub (phân biệt hoa thường)
+  const featuredRepos = [
+    'lap_trinh_web_btvn_weekly', 
+    'web-lab2-HW', 
+    'web-lab1' 
+  ];
+  
+  try {
+    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    
+    if (!response.ok) {
+      throw new Error(`Lỗi HTTP: ${response.status}`);
+    }
+
+    const repos = await response.json();
+
+    // LỌC: Chỉ giữ lại những repo có tên nằm trong danh sách featuredRepos
+    let myRepos = repos.filter(repo => featuredRepos.includes(repo.name));
+    
+    // Nếu mày muốn giới hạn số lượng tối đa (vd: 4 cái)
+    myRepos = myRepos.slice(0, 4);
+
+    grid.innerHTML = '';
+
+    // Nếu không tìm thấy repo nào khớp tên
+    if (myRepos.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;">Không tìm thấy dự án nào!</div>`;
+      return;
+    }
+
+    // Render HTML
+    myRepos.forEach((repo, index) => {
+      let bentoClass = '';
+      if (index === 0) bentoClass = 'bento-large';
+      if (index === 3) bentoClass = 'bento-wide';
+
+      const date = new Date(repo.updated_at).toLocaleDateString('vi-VN');
+
+      const article = document.createElement('article');
+      article.className = `project-card ${bentoClass}`;
+      article.setAttribute('data-category', 'web');
+      article.setAttribute('data-tilt', '');
+      article.setAttribute('data-flip', '');
+
+      article.innerHTML = `
+        <div class="card-glare"></div>
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="project-number">0${index + 1}</div>
+            <h3>${repo.name}</h3>
+            <p>${repo.description || "Không có mô tả cho dự án này."}</p>
+            <span>${repo.language || "N/A"} • ⭐ ${repo.stargazers_count}</span>
+            <div class="flip-hint">↻ Click to flip</div>
+          </div>
+          
+          <div class="flip-face flip-back">
+            <div class="project-number">0${index + 1} / DETAILS</div>
+            <h3>${repo.name}</h3>
+            <ul class="flip-list">
+              <li>Cập nhật: ${date}</li>
+              <li>Ngôn ngữ chính: ${repo.language || "N/A"}</li>
+              <li>Số lượng sao: ${repo.stargazers_count}</li>
+              <li>Dung lượng: ${repo.size} KB</li>
+            </ul>
+            <a href="${repo.html_url}" target="_blank" rel="noopener" style="color:var(--accent); font-weight:bold; text-decoration:none;">Xem trên GitHub ↗</a>
+            <div class="flip-hint">↻ Click to flip back</div>
+          </div>
+        </div>
+      `;
+
+      grid.appendChild(article);
+    });
+
+    initTilt();
+    initFlipCards();
+
+  } catch (error) {
+    console.error("Lỗi khi tải GitHub API:", error);
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #f43f5e;">
+        ⚠️ Không thể tải dự án từ GitHub. <br> 
+        <small>${error.message}</small>
+      </div>
+    `;
+  }
+}
+
+loadGitHubProjects();

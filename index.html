@@ -360,98 +360,12 @@
 
       <div class="projects-grid" id="projectsGrid">
 
-  <article class="project-card bento-large" data-category="web" data-tilt data-flip>
-    <div class="card-glare"></div>
-    <div class="flip-inner">
-      <div class="flip-face flip-front">
-        <div class="project-number">01</div>
-        <h3>My First Website</h3>
-        <p>My first static website created using HTML, CSS and JavaScript.</p>
-        <span>HTML • CSS • JavaScript</span>
-        <div class="flip-hint">↻ Click to flip</div>
-      </div>
-      <div class="flip-face flip-back">
-        <div class="project-number">01 / DETAILS</div>
-        <h3>My First Website</h3>
-        <ul class="flip-list">
-          <li>Semantic HTML5 structure</li>
-          <li>Responsive CSS layout</li>
-          <li>Basic JS interactions</li>
-        </ul>
-        <div class="flip-hint">↻ Click to flip back</div>
-      </div>
-    </div>
-  </article>
-
-  <article class="project-card" data-category="ui" data-tilt data-flip>
-    <div class="card-glare"></div>
-    <div class="flip-inner">
-      <div class="flip-face flip-front">
-        <div class="project-number">02</div>
-        <h3>Modern Portfolio</h3>
-        <p>An upgraded portfolio with responsive design and modern interactions.</p>
-        <span>Responsive • UI/UX</span>
-        <div class="flip-hint">↻ Click to flip</div>
-      </div>
-      <div class="flip-face flip-back">
-        <div class="project-number">02 / DETAILS</div>
-        <h3>Modern Portfolio</h3>
-        <ul class="flip-list">
-          <li>Dark / light theme system</li>
-          <li>Scroll reveal animations</li>
-          <li>Command palette (Ctrl + K)</li>
-        </ul>
-        <div class="flip-hint">↻ Click to flip back</div>
-      </div>
-    </div>
-  </article>
-
-  <article class="project-card" data-category="web" data-tilt data-flip>
-    <div class="card-glare"></div>
-    <div class="flip-inner">
-      <div class="flip-face flip-front">
-        <div class="project-number">03</div>
-        <h3>Student Manager</h3>
-        <p>A concept CRUD app for managing student records and simple reporting.</p>
-        <span>CRUD • Logic • Database</span>
-        <div class="flip-hint">↻ Click to flip</div>
-      </div>
-      <div class="flip-face flip-back">
-        <div class="project-number">03 / DETAILS</div>
-        <h3>Student Manager</h3>
-        <ul class="flip-list">
-          <li>Create / Read / Update / Delete</li>
-          <li>Search + filter students</li>
-          <li>Export report to CSV</li>
-        </ul>
-        <div class="flip-hint">↻ Click to flip back</div>
-      </div>
-    </div>
-  </article>
-
-  <article class="project-card bento-wide" data-category="ai" data-tilt data-flip>
-    <div class="card-glare"></div>
-    <div class="flip-inner">
-      <div class="flip-face flip-front">
-        <div class="project-number">04</div>
-        <h3>Future Project</h3>
-        <p>More projects will be added as I continue learning — AI side, coming soon.</p>
-        <span>Coming Soon</span>
-        <div class="flip-hint">↻ Click to flip</div>
-      </div>
-      <div class="flip-face flip-back">
-        <div class="project-number">04 / ROADMAP</div>
-        <h3>Future Project</h3>
-        <ul class="flip-list">
-          <li>AI-powered content tool</li>
-          <li>Business + tech integration</li>
-          <li>Real database backend</li>
-        </ul>
-        <div class="flip-hint">↻ Click to flip back</div>
-      </div>
-    </div>
-  </article>
-
+  <div class="projects-grid" id="projectsGrid">
+  <!-- Trình duyệt sẽ hiển thị cái này trong lúc chờ gọi API -->
+  <div class="loading-repos" style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+    <span class="loader-dot" style="display:inline-block; margin-right:8px;"></span> Đang tải dự án từ GitHub...
+  </div>
+</div>
 </div>
     </section>
 
